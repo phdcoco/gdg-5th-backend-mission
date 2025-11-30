@@ -4,8 +4,10 @@ import gdg.hongik.mission.dto.ProductResponse;
 import gdg.hongik.mission.dto.PurchaseRequest;
 import gdg.hongik.mission.dto.PurchaseResponse;
 import gdg.hongik.mission.service.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -23,8 +25,9 @@ public class ProductController {
      * @return 조회된 상품 정보를 담은 DTO
      */
     @GetMapping // 이름으로 상품을 검색한다.
-    public ProductResponse getProduct(@RequestParam String name) {
-        return productService.getProductByName(name);
+    public ResponseEntity<ProductResponse> getProduct(@RequestParam String name) {
+        ProductResponse response = productService.getProductByName(name);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -34,7 +37,8 @@ public class ProductController {
      * @return 총 구매 금액과 구매 항목 리스트를 담은 DTO
      */
     @PostMapping("/purchase") // 장바구니에 담긴 상품들을 구매한다.
-    public PurchaseResponse purchase(@RequestBody PurchaseRequest request) { // 여러 개일 수 있으니 Map 해시를 사용.
-        return productService.purchase(request);
+    public ResponseEntity<PurchaseResponse> purchase(@RequestBody PurchaseRequest request) {
+        PurchaseResponse response = productService.purchase(request);
+        return ResponseEntity.ok(response);
     }
 }
